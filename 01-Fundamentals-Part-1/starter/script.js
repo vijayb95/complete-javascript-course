@@ -38,19 +38,40 @@
 
 // console.log(ageJay > ageHari)
 
-const firstName = 'Jay';
-const job = 'Developer';
-const birthYear = 1995;
-const year = 2021;
+// const firstName = 'Jay';
+// const job = 'Developer';
+// const birthYear = 1995;
+// const year = 2021;
 
-const jay = "I'm " + firstName + ", a " + (year - birthYear) + " year old " + job + "!!"
+// const jay = "I'm " + firstName + ", a " + (year - birthYear) + " year old " + job + "!!"
 
-console.log(jay)
+// console.log(jay)
 
-const jayNew = `I'm ${firstName}, a ${year - birthYear} years old ${job}!!`
+// const jayNew = `I'm ${firstName}, a ${year - birthYear} years old ${job}!!`
 
-console.log(jayNew)
+// console.log(jayNew)
 
-console.log(`Multi
-Line
-String`)
+// console.log(`Multi
+// Line
+// String`)
+
+// const inputYear = '1994'
+// console.log(inputYear + 18)
+// console.log(Number(inputYear) + 18)
+
+// console.log(Boolean(NaN))
+
+// const fav = Number(prompt("What's your favourite number"))
+
+// console.log(fav)
+
+// const day = 'monday';
+
+// switch (day) {
+//     case 'monday':
+//         console.log(`Its monday :(`)
+//         break;
+//     default:
+//         console.log(`Not a valid day: ${day}`)
+// }
+
