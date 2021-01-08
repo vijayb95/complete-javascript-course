@@ -38,7 +38,7 @@ for (const [i, el] of menu.entries()) {
 
 console.log(restaurant.openingHours?.fri?.open); //optional chaining
 
-//LOOPING OBJECTS< KEYS AND ENTRIES
+//LOOPING OBJECTS, KEYS AND ENTRIES
 console.log(Object.values(openingHours));
 for (const day of Object.keys(openingHours)) console.log(day);
 
@@ -49,3 +49,56 @@ for (const [key, { open, close }] of entries) {
   // console.log(x);
   console.log(`on ${key} open at ${open} and close at ${close}`);
 }
+
+//SETS
+const orderSet = new Set(['Vada', 'Bonda', 'Bonda', 'Idly', 'Vada']);
+console.log(orderSet); //Set remove duplicates
+console.log(orderSet.size);
+console.log(orderSet.has('Idly'));
+orderSet.add('Bajji');
+orderSet.add('Bajji');
+orderSet.delete('Bonda');
+//orderSet.clear()
+console.log(orderSet);
+
+for (const order of orderSet) console.log(order);
+
+//Example
+const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Janitor'];
+const staffUnique = [...new Set(staff)]; //taking unique staffs into Set and using spread operator to put it in array
+console.log(staffUnique);
+
+//MAPS
+const rest = new Map();
+rest.set('name', 'Jay Biryani');
+rest.set(1, 'Chennai, TN');
+console.log(rest.set(2, 'Bangalore, Mysore'));
+rest.set(document.querySelector('h1'), 'Heading');
+console.log(rest);
+
+//MAP ITERATIONS
+const question = new Map([
+  ['question', 'Best programming language?'],
+  [1, 'Python'],
+  [2, 'JS'],
+  ['Correct'],
+  [true, 'Correct'],
+  [false, 'Try Again!'],
+]);
+console.log(question);
+
+//Convert object to Map
+console.log(Object.entries(openingHours));
+const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap);
+
+// const answer = Number(prompt('Your Amswer?'));
+const answer = 1;
+for (const [key, value] of question) {
+  if (key === answer) {
+    console.log(`Answer ${key}: ${value}`);
+  }
+}
+//convert map to array
+console.log([...question]);
+console.log([...question.keys()]);
