@@ -1,153 +1,71 @@
 'use strict';
 
-//default parameters
-const bookings = [];
+// Coding Challenge #1
 
-const createBooking = function (
-  flightNum,
-  numPassesnger = 1,
-  price = 999 * numPassesnger
-) {
-  const booking = {
-    flightNum,
-    numPassesnger,
-    price,
-  };
-  console.log(booking);
-  bookings.push(booking);
-};
+// Let's build a simple poll app!
+// A poll has a question, an array of options from which people can choose, and an
+// array with the number of replies for each option. This data is stored in the starter
+// 'poll' object below.
+// Your tasks:
+// 1. Create a method called 'registerNewAnswer' on the 'poll' object. The
+// method does 2 things:
+// 1.1. Display a prompt window for the user to input the number of the
+// selected option. The prompt should look like this:
+// What is your favourite programming language?
+// 0: JavaScript
+// 1: Python
+// 2: Rust
+// 3: C++
+// (Write option number)
+// 1.2. Based on the input number, update the 'answers' array property. For
+// example, if the option is 3, increase the value at position 3 of the array by
+// 1. Make sure to check if the input is a number and if the number makes
+// sense (e.g. answer 52 wouldn't make sense, right?)
+// 2. Call this method whenever the user clicks the "Answer poll" button.
+// 3. Create a method 'displayResults' which displays the poll results. The
+// method takes a string as an input (called 'type'), which can be either 'string'
+// or 'array'. If type is 'array', simply display the results array as it is, using
+// console.log(). This should be the default option. If type is 'string', display a
+// string like "Poll results are 13, 2, 4, 1".
+// 4. Run the 'displayResults' method at the end of each
+// 'registerNewAnswer' method call.
+// 5. Bonus: Use the 'displayResults' method to display the 2 arrays in the test
+// data. Use both the 'array' and the 'string' option. Do not put the arrays in the poll
+// object! So what should the this keyword look like in this situation?
 
-createBooking('LH123');
-createBooking('LH123', 2, 2000);
-createBooking('LH123', 6);
-createBooking('LH123', undefined, 300);
+// Test data for bonus:
+// § Data 1: [5, 2, 3]
+// § Data 2: [1, 5, 3, 9, 6, 1]
+// Hints: Use many of the tools you learned about in this and the last section �
+// GOOD LUCK �
 
-//PASSBY VALUE VS PASSBY REFERENCE
-const flight = 'LH123';
-const jay = {
-  name: 'vijay',
-  passport: 247955855295,
-};
+const poll = {
+  question: 'What is your favourite programming language?',
 
-const checkIn = function (flightNum, passenger) {
-  flightNum = 'LH999'; //pass by value
-  passenger.name = 'Mr. ' + passenger.name; //passby Reference
-  //   if (passenger.passport === 247955855295) {
-  //     alert('Checked In');
-  //   } else {
-  //     alert('Wrong Passport');
-  //   }
-};
+  options: ['0: JavaScript', '1: Python', '2: Rust', '3: C++'],
 
-checkIn(flight, jay); //passing jay reference
+  // This generates [0, 0, 0, 0]. More in the next section!
+  answers: new Array(4).fill(0),
 
-//FIRST-CLASS AND HIGHER-ORDER FUNCTIONS
-//Callback Fn
-const oneWord = function (str) {
-  return str.replace(/ /g, '').toLowerCase();
-};
-
-const upperFirstWord = function (str) {
-  const [first, ...others] = str.split(' ');
-  return [first.toUpperCase(), ...others].join(' ');
-};
-
-//Higher order fn
-const transformer = function (str, fn) {
-  console.log(`Original string: ${str}`);
-  console.log(`Transformed by: ${fn.name}`);
-  console.log(`Transformed String: ${fn(str)}`);
-};
-
-transformer('Js is best!', upperFirstWord);
-
-transformer('Js is best!', oneWord);
-
-//Returning Fn - Regular type
-const greet = function (greeting) {
-  return function (name) {
-    console.log(`${greeting} ${name}`);
-  };
-};
-//Returning Fn - Arrow type
-// const greet = greeting => name => console.log(`${greeting} ${name}`);
-
-const greetHey = greet('Hey');
-greetHey('Jay');
-greetHey('vijay');
-
-greet('Hello')('Noname');
-
-//CALL AND APPLY METHODS
-//call
-const lufthansa = {
-  airline: 'Lufthansa',
-  iataCode: 'LH',
-  booking: [],
-  book(flightNum, name) {
-    console.log(
-      `${name} booked a seat on ${this.airline} flight ${this.iataCode} ${flightNum}`
+  registerNewAnswer() {
+    let favLang = prompt(
+      `What is your favouite programming language? \n 0: JavaScript\n1: Python\n2: Rust\n3: c++\n(Write option number)`
     );
-    this.booking.push({ flight: `${this.iataCode}${flightNum}`, name });
+    favLang >= 0 && favLang <= 3
+      ? this.answers[favLang]++
+      : alert(`${favLang} is not a valid option`);
+    this.displayResult('array');
+    this.displayResult('string');
+  },
+
+  displayResult(type) {
+    if (type === 'array') {
+      console.log(this.answers);
+    } else {
+      console.log(`Poll results are: ${this.answers}`);
+    }
   },
 };
 
-lufthansa.book(238, 'Vijay B');
-lufthansa.book(54, 'Jay B');
-console.log(lufthansa);
-
-const eurowings = {
-  airline: 'Eurowings',
-  iataCode: 'EW',
-  booking: [],
-};
-const book = lufthansa.book;
-
-book.call(eurowings, 23, 'Sara');
-console.log(eurowings);
-
-const flightData = [583, 'George Cooper'];
-//apply
-book.apply(lufthansa, flightData);
-console.log(lufthansa);
-
-//call
-book.call(eurowings, ...flightData);
-console.log(eurowings);
-
-//BIND METHOD
-const bookEW = book.bind(eurowings);
-const bookLH23 = book.bind(lufthansa, 25); //always booking for 25
-
-bookEW(23, 'Vijay Balaji');
-bookLH23('Vj Balaji');
-
-//with event listeners
-lufthansa.planes = 300;
-lufthansa.buyPlane = function () {
-  console.log(this);
-  this.planes++;
-  console.log(this.planes);
-};
-
-document
-  .querySelector('.buy')
-  .addEventListener('click', lufthansa.buyPlane.bind(lufthansa)); //pointing this keyword using bing
-
-//Partial application
-const addTax = (rate, value) => value + value * rate;
-console.log(addTax(0.1, 200));
-
-const addVAT = addTax.bind(null, 0.23);
-
-//Partial application - challenge
-// const addTax = function (rate) {
-//   return function (value) {
-//     console.log(value + value * rate);
-//   };
-// };
-
-// const addVAT = addTax(0.23);
-// const addTAX2 = addTax(0.02);
-// addVAT(100);
-// addTAX2(100);
+const ansPoll = document.querySelector('.poll');
+ansPoll.addEventListener('click', poll.registerNewAnswer.bind(poll));
