@@ -62,10 +62,13 @@ const poll = {
     if (type === 'array') {
       console.log(this.answers);
     } else {
-      console.log(`Poll results are: ${this.answers}`);
+      console.log(`Poll results are: ${this.answers.join(',')}`);
     }
   },
 };
 
 const ansPoll = document.querySelector('.poll');
 ansPoll.addEventListener('click', poll.registerNewAnswer.bind(poll));
+
+poll.displayResult.call({ answers: [5, 2, 3] }, 'string');
+poll.displayResult.call({ answers: [5, 2, 3] }, 'array');
