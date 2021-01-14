@@ -83,9 +83,29 @@ displayMovements(account1.movements);
 //Calculating and printing balance
 const calcPrintBalance = function (movements) {
   const balance = movements.reduce((acc, curr) => acc + curr, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance} €`;
 };
 calcPrintBalance(account1.movements);
+
+const calcPrintSummary = function (movements) {
+  const incomes = movements
+    .filter(x => x > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes} €`;
+
+  const expense = movements
+    .filter(x => x < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(expense)} €`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter(int => int > 1) //Excluding interest values below 1
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumInterest.textContent = `${Math.abs(interest)} €`;
+};
+calcPrintSummary(account1.movements);
 
 //creating usernames for all accounts
 const createUsernames = function (accs) {
@@ -234,3 +254,14 @@ const max = movements.reduce(
   movements[0]
 );
 console.log(max);
+
+//CHAINING
+const euroToUsd = 1.1;
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * euroToUsd)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(totalDepositsUSD);
+
+//FIND
+movements.find(mov => mov < 0);
