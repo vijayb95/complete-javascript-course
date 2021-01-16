@@ -79,10 +79,18 @@ const displayMovements = function (movements) {
   });
 };
 
+const updateUI = function (currentAccount) {
+  //Display balance, summary and movements
+  calcPrintSummary(currentAccount.movements, currentAccount.interestRate);
+  calcPrintBalance(currentAccount);
+  displayMovements(currentAccount.movements);
+};
+
 //Calculating and printing balance
-const calcPrintBalance = function (movements) {
-  const balance = movements.reduce((acc, curr) => acc + curr, 0);
-  labelBalance.textContent = `${balance} €`;
+const calcPrintBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, curr) => acc + curr, 0);
+
+  labelBalance.textContent = `${acc.balance} €`;
 };
 
 const calcPrintSummary = function (movements, iRate) {
@@ -136,10 +144,27 @@ btnLogin.addEventListener('click', function (e) {
     containerApp.style.opacity = 100;
     inputLoginPin.blur();
 
-    //Display balance, summary and movements
-    calcPrintSummary(currentAccount.movements, currentAccount.interestRate);
-    calcPrintBalance(currentAccount.movements);
-    displayMovements(currentAccount.movements);
+    updateUI(currentAccount);
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+  inputTransferAmount.value = inputTransferTo.value = '';
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    amount <= currentAccount.balance &&
+    currentAccount.username !== receiverAcc?.username
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+
+    updateUI(currentAccount);
   }
 });
 
@@ -296,3 +321,5 @@ console.log(accounts);
 
 const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 console.log(account);
+
+//FIND INDEX
