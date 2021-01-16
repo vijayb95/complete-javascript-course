@@ -78,16 +78,14 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
-displayMovements(account1.movements);
 
 //Calculating and printing balance
 const calcPrintBalance = function (movements) {
   const balance = movements.reduce((acc, curr) => acc + curr, 0);
   labelBalance.textContent = `${balance} €`;
 };
-calcPrintBalance(account1.movements);
 
-const calcPrintSummary = function (movements) {
+const calcPrintSummary = function (movements, iRate) {
   const incomes = movements
     .filter(x => x > 0)
     .reduce((acc, mov) => acc + mov, 0);
@@ -100,12 +98,11 @@ const calcPrintSummary = function (movements) {
 
   const interest = movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * iRate) / 100)
     .filter(int => int > 1) //Excluding interest values below 1
     .reduce((acc, mov) => acc + mov, 0);
   labelSumInterest.textContent = `${Math.abs(interest)} €`;
 };
-calcPrintSummary(account1.movements);
 
 //creating usernames for all accounts
 const createUsernames = function (accs) {
@@ -118,6 +115,33 @@ const createUsernames = function (accs) {
   });
 };
 createUsernames(accounts);
+
+//Event handler
+let currentAccount;
+btnLogin.addEventListener('click', function (e) {
+  //Preventing the form from submitting
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    //Display UI and welcome message
+    labelWelcome.textContent = `Welcome Back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+
+    //clear input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    containerApp.style.opacity = 100;
+    inputLoginPin.blur();
+
+    //Display balance, summary and movements
+    calcPrintSummary(currentAccount.movements, currentAccount.interestRate);
+    calcPrintBalance(currentAccount.movements);
+    displayMovements(currentAccount.movements);
+  }
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
